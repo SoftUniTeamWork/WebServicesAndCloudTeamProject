@@ -1,10 +1,9 @@
-﻿namespace WebChat.Models
-{
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
+namespace WebChat.Models
+{
     public class Room
     {
         public Room()
@@ -15,7 +14,7 @@
             this.Messages = new HashSet<Message>();
             this.Size = 20;
         }
-
+        public int Id { get; set; }
         public string Password { get; set; }
 
         public RoomType Type { get; set; }
@@ -30,13 +29,6 @@
 
         [Required]
         public virtual ICollection<Tag> Tags { get; set; }
-        
-        [Required]
-        [ForeignKey("ApplicationUser")]
-        public int OwnerId { get; set; }
-
-        [Required]
-        public virtual ApplicationUser Owner { get; set; }
 
         public ICollection<Message> Messages { get; set; }
 

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebChat.Models
+﻿namespace WebChat.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
     public class Notification
     {
+        public int Id { get; set; }
+
         [MinLength(10)]
         [MaxLength(50)]
         [Required]
@@ -19,7 +15,7 @@ namespace WebChat.Models
 
         public string Title { get; set; }
 
-        [ForeignKey("PublicRoom")]
+        [Required]
         public int RoomId { get; set; }
 
         public virtual Room Room { get; set; }

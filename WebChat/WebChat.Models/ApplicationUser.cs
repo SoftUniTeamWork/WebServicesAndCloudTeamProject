@@ -1,10 +1,7 @@
-﻿
-
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace WebChat.Models
+﻿namespace WebChat.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;
@@ -24,7 +21,7 @@ namespace WebChat.Models
 
         public ICollection<Notification> Notifications { get; set; }
 
-        [ForeignKey("Room")]
+        [Required]
         public int RoomId { get; set; }
 
         public virtual Room Room { get; set; }
