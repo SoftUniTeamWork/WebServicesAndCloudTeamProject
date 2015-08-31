@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Owin;
+using WebChat.Services;
 
-[assembly: OwinStartup(typeof(WebChat.Services.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 
 namespace WebChat.Services
 {

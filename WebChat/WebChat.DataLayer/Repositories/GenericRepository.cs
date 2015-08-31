@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebChat.DataLayer.Repositories
+﻿namespace WebChat.DataLayer.Repositories
 {
+    using System;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     public class GenericRepositorty<T> : IGenericRepository<T> where T : class
     {
         private IWebChatContext context;
@@ -20,7 +18,7 @@ namespace WebChat.DataLayer.Repositories
             return this.context.Set<T>();
         }
 
-        public IQueryable<T> Search(System.Linq.Expressions.Expression<Func<T, bool>> condition)
+        public IQueryable<T> Search(Expression<Func<T, bool>> condition)
         {
             return this.All().Where(condition);
         }

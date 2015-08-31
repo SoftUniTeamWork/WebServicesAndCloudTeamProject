@@ -15,8 +15,10 @@ namespace WebChat.Models
             this.Size = 20;
         }
         public int Id { get; set; }
+
         public string Password { get; set; }
 
+        [DefaultValue(RoomType.Private)]
         public RoomType Type { get; set; }
 
         [DefaultValue(20)]
