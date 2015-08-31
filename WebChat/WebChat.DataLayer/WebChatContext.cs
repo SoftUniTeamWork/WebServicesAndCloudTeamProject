@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.EntityFramework;
-using WebChat.DataLayer.Migrations;
-using WebChat.Models;
-
-namespace WebChat.DataLayer
+﻿namespace WebChat.DataLayer
 {
+    using System.Data.Entity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Migrations;
+    using Models;
+
     public class WebChatContext : IdentityDbContext<ApplicationUser>
     {
         public WebChatContext()
             : base("name=WebChatContext")
         {
             Database.SetInitializer(
-                  new MigrateDatabaseToLatestVersion<WebChatContext,
-                      Configuration>());
+                  new DropCreateDatabaseAlways<WebChatContext>());
         }
         public DbSet<Tag> Tags { get; set; }
 
