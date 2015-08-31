@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+
     class DatabaseInitMain
     {
         static void Main()

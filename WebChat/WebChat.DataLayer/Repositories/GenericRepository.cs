@@ -7,9 +7,9 @@
 
     public class GenericRepositorty<T> : IGenericRepository<T> where T : class
     {
-        private IWebChatContext context;
+        private WebChatContext context;
 
-        public GenericRepositorty(IWebChatContext onlineShopContext)
+        public GenericRepositorty(WebChatContext onlineShopContext)
         {
             this.context = onlineShopContext;
         }

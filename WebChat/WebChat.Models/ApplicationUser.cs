@@ -11,8 +11,8 @@
     {
         public ApplicationUser()
         {
-            this.Messages = new HashSet<Message>();
-            this.Notifications = new HashSet<Notification>();
+            Messages = new HashSet<Message>();
+            Notifications = new HashSet<Notification>();
         }
 
         public string CurrentLocation { get; set; }
