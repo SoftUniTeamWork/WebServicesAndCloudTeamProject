@@ -2,7 +2,7 @@
 {
     using Models;
 
-    class UsersRepository : GenericRepositorty<ApplicationUser>
+    public class UsersRepository : GenericRepositorty<ApplicationUser>
     {
         public UsersRepository(WebChatContext context)
             : base(context)

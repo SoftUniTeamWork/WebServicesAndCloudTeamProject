@@ -7,7 +7,7 @@
     {
         public int Id { get; set; }
         [Required]
-        public DateTime Sent { get; set; }
+        public DateTime SentDate { get; set; }
 
         [Required]
         [MaxLength(500)]

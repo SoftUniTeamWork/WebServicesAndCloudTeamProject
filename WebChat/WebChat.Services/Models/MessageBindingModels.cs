@@ -1,6 +1,6 @@
 ﻿namespace WebChat.Services.Models
 {
-    public class AddMessageBindingModel
+    public class MessageBindingModel
     {
         public string Text { get; set; }
 

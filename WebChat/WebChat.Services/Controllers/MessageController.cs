@@ -1,20 +1,50 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
-using Microsoft.AspNet.Identity;
-using WebChat.DataLayer;
-using WebChat.Services.Models;
-using WebChat.Models;
-
-namespace WebChat.Services.Controllers
+﻿namespace WebChat.Services.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Web.Http;
+    using Microsoft.AspNet.Identity;
+    using WebChat.Models;
+    using Models;
+    using DataLayer.Contracts;
+    using DataLayer.Repositories;
 
     public class MessageController : BaseApiController
     {
+        private IGenericRepository<Message> messagesRepository;
+        public MessageController()
+        {
+            this.messagesRepository = new MessagesRepository(this.Data);
+        }
+
+        public MessageController(IGenericRepository<Message> messagesRepository)
+      {
+          this.messagesRepository = messagesRepository;
+      }
+        [HttpGet]
+        [Route("api/rooms/{roomId}/messages")]
+        public IHttpActionResult GetAllMessages(int roomId)
+        {
+            var room = this.Data.Rooms.FirstOrDefault(r => r.Id == roomId); ;
+
+            if (room == null)
+            {
+                return this.BadRequest(string.Format("Room with id {0} doesn't exist",roomId));
+            }
+
+            var messages = this.Data.Messages
+                .Where(m => m.RoomId == room.Id)
+                .Select(MessageViewModel.Create)
+                .OrderByDescending(m => m.SentDate)
+                .AsQueryable();
+
+            return this.Ok(messages);
+        }
+
         [Authorize]
         [HttpPost]
         [Route("api/rooms/{roomId}/messages")]
-        public IHttpActionResult AddMessage(int roomId, AddMessageBindingModel model)
+        public IHttpActionResult AddMessage(int roomId, MessageBindingModel model)
         {
             var userId = this.User.Identity.GetUserId();
             var room = this.Data.Rooms.FirstOrDefault(r => r.Id == roomId);
@@ -49,13 +79,13 @@ namespace WebChat.Services.Controllers
             {
                 Text = model.Text,
                 PosterId = model.PosterId,
-                Sent = DateTime.Now,
+                SentDate = DateTime.Now,
                 Room = room,
                 RoomId = roomId
             };
 
-            Data.Messages.Add(message);
-            Data.SaveChanges();
+            messagesRepository.Add(message);
+            messagesRepository.Save();
 
             return Ok(string.Format("Message from user with id = {0} successfully sent!", poster.Id));
         }
