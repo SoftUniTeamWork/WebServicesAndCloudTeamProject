@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using Microsoft.Ajax.Utilities;
 using WebChat.Models;
 
 namespace WebChat.Services.Models
@@ -15,12 +16,7 @@ namespace WebChat.Services.Models
 
         public string Text { get; set; }
 
-        public int RoomId { get; set; }
-        public virtual Room Room { get; set; }
-
         public string PosterId { get; set; }
-
-        public virtual ApplicationUser Poster { get; set; }
 
         public static Expression<Func<Message, MessageViewModel>> Create
         {
@@ -31,8 +27,7 @@ namespace WebChat.Services.Models
                     Id = m.Id,
                     SentDate = m.SentDate,
                     Text = m.Text,
-                    PosterId = m.PosterId,
-                    RoomId = m.RoomId,
+                    PosterId = m.Poster.Id
                 };
             }
         } 

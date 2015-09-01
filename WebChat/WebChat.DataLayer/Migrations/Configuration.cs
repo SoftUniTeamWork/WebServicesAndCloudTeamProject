@@ -1,3 +1,5 @@
+using WebChat.Models;
+
 namespace WebChat.DataLayer.Migrations
 {
     using System;

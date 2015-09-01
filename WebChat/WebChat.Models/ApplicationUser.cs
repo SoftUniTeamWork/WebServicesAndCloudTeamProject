@@ -11,19 +11,15 @@
     {
         public ApplicationUser()
         {
-            Messages = new HashSet<Message>();
-            Notifications = new HashSet<Notification>();
+            this.Messages = new HashSet<Message>();
+            this.Notifications = new HashSet<Notification>();
         }
-        public bool IsOnline { get; set; }
 
         public string CurrentLocation { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
 
         public ICollection<Notification> Notifications { get; set; }
-
-        [Required]
-        public int RoomId { get; set; }
 
         public virtual Room Room { get; set; }
 

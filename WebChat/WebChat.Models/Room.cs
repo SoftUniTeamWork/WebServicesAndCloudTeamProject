@@ -14,6 +14,7 @@ namespace WebChat.Models
             this.Messages = new HashSet<Message>();
             this.Size = 20;
         }
+        
         public int Id { get; set; }
 
         public string Password { get; set; }
@@ -32,11 +33,11 @@ namespace WebChat.Models
         [Required]
         public virtual ICollection<Tag> Tags { get; set; }
 
-        public ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
 
-        public ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
 
-        public ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<ApplicationUser> Users { get; set; }
 
     }
 }

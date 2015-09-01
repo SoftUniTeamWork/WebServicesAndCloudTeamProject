@@ -1,8 +1,7 @@
-﻿using System.Web.Http;
-using WebChat.DataLayer;
-
-namespace WebChat.Services.Controllers
+﻿namespace WebChat.Services.Controllers
 {
+    using System.Web.Http;
+    using DataLayer;
     public class BaseApiController : ApiController
     {
 

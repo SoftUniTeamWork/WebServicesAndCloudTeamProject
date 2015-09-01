@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebChat.DataLayer", "WebCha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebChat.Services", "WebChat.Services\WebChat.Services.csproj", "{8B4D193D-AD75-447D-A394-E9DD2748E8F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TEST", "TEST\TEST.csproj", "{3EBE9CC4-765E-433A-BEC8-C1E25C4CDE7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8B4D193D-AD75-447D-A394-E9DD2748E8F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B4D193D-AD75-447D-A394-E9DD2748E8F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B4D193D-AD75-447D-A394-E9DD2748E8F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EBE9CC4-765E-433A-BEC8-C1E25C4CDE7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EBE9CC4-765E-433A-BEC8-C1E25C4CDE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EBE9CC4-765E-433A-BEC8-C1E25C4CDE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EBE9CC4-765E-433A-BEC8-C1E25C4CDE7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿namespace WebChat.DataLayer
+﻿using System.Data.Entity.ModelConfiguration.Conventions;
+
+namespace WebChat.DataLayer
 {
     using System.Data.Entity;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -21,8 +23,6 @@
         public DbSet<Message> Messages { get; set; }
 
         public DbSet<Notification> Notifications { get; set; }
-
-        public DbSet<ApplicationUser> Users { get; set; }
 
         public static WebChatContext Create()
         {

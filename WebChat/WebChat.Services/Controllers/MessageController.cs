@@ -11,7 +11,7 @@
 
     public class MessageController : BaseApiController
     {
-        private IGenericRepository<Message> messagesRepository;
+        private readonly IGenericRepository<Message> messagesRepository;
         public MessageController()
         {
             this.messagesRepository = new MessagesRepository(this.Data);
@@ -21,8 +21,8 @@
       {
           this.messagesRepository = messagesRepository;
       }
+
         [HttpGet]
-        [Route("api/rooms/{roomId}/messages")]
         public IHttpActionResult GetAllMessages(int roomId)
         {
             var room = this.Data.Rooms.FirstOrDefault(r => r.Id == roomId); ;
@@ -33,7 +33,7 @@
             }
 
             var messages = this.Data.Messages
-                .Where(m => m.RoomId == room.Id)
+                .Where(m => m.Room.Id == room.Id)
                 .Select(MessageViewModel.Create)
                 .OrderByDescending(m => m.SentDate)
                 .AsQueryable();
@@ -43,7 +43,6 @@
 
         [Authorize]
         [HttpPost]
-        [Route("api/rooms/{roomId}/messages")]
         public IHttpActionResult AddMessage(int roomId, MessageBindingModel model)
         {
             var userId = this.User.Identity.GetUserId();
@@ -78,10 +77,9 @@
             var message = new Message
             {
                 Text = model.Text,
-                PosterId = model.PosterId,
+                Poster = poster,
                 SentDate = DateTime.Now,
-                Room = room,
-                RoomId = roomId
+                Room = room
             };
 
             messagesRepository.Add(message);

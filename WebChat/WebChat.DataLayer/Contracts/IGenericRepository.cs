@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-
-namespace WebChat.DataLayer.Contracts
+﻿namespace WebChat.DataLayer.Contracts
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     public interface IGenericRepository<T>
     {
         IQueryable<T> GetAll();
