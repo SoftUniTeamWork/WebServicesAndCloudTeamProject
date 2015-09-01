@@ -4,23 +4,31 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
+    using Contracts;
+    using System.Data.Entity.Infrastructure;
 
     public class GenericRepositorty<T> : IGenericRepository<T> where T : class
     {
-        private WebChatContext context;
+        private readonly IWebChatContext context;
 
-        public GenericRepositorty(WebChatContext onlineShopContext)
+        public GenericRepositorty(IWebChatContext onlineShopContext)
         {
             this.context = onlineShopContext;
         }
-        public IQueryable<T> All()
+
+        public GenericRepositorty()
+            :this(new WebChatContext())
+        {
+            
+        }
+        public IQueryable<T> GetAll()
         {
             return this.context.Set<T>();
         }
 
         public IQueryable<T> Search(Expression<Func<T, bool>> condition)
         {
-            return this.All().Where(condition);
+            return this.GetAll().Where(condition);
         }
 
         public T Add(T entity)
@@ -48,9 +56,30 @@
         }
 
         private void ChangeState(T entity, EntityState state)
+       {
+           var entry = this.AttachIfDetached(entity);
+           entry.State = state;
+       }
+
+       private DbEntityEntry AttachIfDetached(T entity)
+       {
+           var entry = this.context.Entry(entity);
+
+           if (entry.State == EntityState.Detached)
+           {
+               this.context.Set<T>().Attach(entity);
+           }
+
+           return entry;
+       }
+
+        public void Save()
         {
-            this.context.Set<T>().Attach(entity);
-            this.context.Entry(entity).State = state;
+            context.SaveChanges();
         }
+
+        private bool disposed = false;
+
+        
     }
 }

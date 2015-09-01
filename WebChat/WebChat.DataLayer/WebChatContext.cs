@@ -3,8 +3,9 @@
     using System.Data.Entity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
+    using Contracts;
 
-    public class WebChatContext : IdentityDbContext<ApplicationUser>
+    public class WebChatContext : IdentityDbContext<ApplicationUser>, IWebChatContext
     {
         public WebChatContext()
             : base("name=WebChatContext")

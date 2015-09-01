@@ -5,16 +5,16 @@ namespace WebChat.Services.Controllers
 {
     public class BaseApiController : ApiController
     {
-        private IWebChatContext _data;
 
-        protected BaseApiController(IWebChatContext data)
+        protected BaseApiController() 
+            : this (new WebChatContext())
         {
-            data = _data;
         }
 
-        protected IWebChatContext Data
+        public BaseApiController(WebChatContext data)
         {
-            get { return _data; }
+            this.Data = data;
         }
+        protected WebChatContext Data { get; set; }
     }
 }

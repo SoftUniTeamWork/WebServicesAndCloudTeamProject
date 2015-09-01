@@ -14,6 +14,7 @@
             Messages = new HashSet<Message>();
             Notifications = new HashSet<Notification>();
         }
+        public bool IsOnline { get; set; }
 
         public string CurrentLocation { get; set; }
 

@@ -14,6 +14,10 @@
         public string Text { get; set; }
 
         [Required]
+        public int RoomId { get; set; }
+        public virtual Room Room { get; set; }
+
+        [Required]
         public string PosterId { get; set; }
 
         public virtual ApplicationUser Poster { get; set; }
