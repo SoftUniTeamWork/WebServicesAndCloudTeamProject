@@ -8,6 +8,8 @@
     {
         IQueryable<T> GetAll();
 
+        T GetById(object id);
+
         IQueryable<T> Search(Expression<Func<T, bool>> condition);
 
         T Add(T entity);
@@ -16,8 +18,10 @@
 
         T Delete(T entity);
 
+        void Delete(object id);
+
         T Detach(T entity);
 
-        void Save();
+        int SaveChanges();
     }
 }

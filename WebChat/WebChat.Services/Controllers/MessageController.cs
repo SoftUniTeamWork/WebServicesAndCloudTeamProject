@@ -1,4 +1,6 @@
-﻿namespace WebChat.Services.Controllers
+﻿using WebChat.DataLayer.Data;
+
+namespace WebChat.Services.Controllers
 {
     using System;
     using System.Linq;
@@ -7,32 +9,32 @@
     using WebChat.Models;
     using Models;
     using DataLayer.Contracts;
-    using DataLayer.Repositories;
 
     public class MessageController : BaseApiController
     {
         private readonly IGenericRepository<Message> messagesRepository;
         public MessageController()
+            : this(new WebChatData())
         {
-            this.messagesRepository = new MessagesRepository(this.Data);
         }
 
-        public MessageController(IGenericRepository<Message> messagesRepository)
-      {
-          this.messagesRepository = messagesRepository;
-      }
+        public MessageController(IWebChatData data)
+            : base(data)
+        {
+        }
+
 
         [HttpGet]
         public IHttpActionResult GetAllMessages(int roomId)
         {
-            var room = this.Data.Rooms.FirstOrDefault(r => r.Id == roomId); ;
+            var room = this.Data.Rooms.GetAll().FirstOrDefault(r => r.Id == roomId); ;
 
             if (room == null)
             {
                 return this.BadRequest(string.Format("Room with id {0} doesn't exist",roomId));
             }
 
-            var messages = this.Data.Messages
+            var messages = this.Data.Messages.GetAll()
                 .Where(m => m.Room.Id == room.Id)
                 .Select(MessageViewModel.Create)
                 .OrderByDescending(m => m.SentDate)
@@ -46,8 +48,8 @@
         public IHttpActionResult AddMessage(int roomId, MessageBindingModel model)
         {
             var userId = this.User.Identity.GetUserId();
-            var room = this.Data.Rooms.FirstOrDefault(r => r.Id == roomId);
-            var sendingUser = this.Data.Users
+            var room = this.Data.Rooms.GetAll().FirstOrDefault(r => r.Id == roomId);
+            var sendingUser = this.Data.Users.GetAll()
                 .FirstOrDefault(u => u.Id == userId);
 
             if (userId == null)
@@ -67,7 +69,7 @@
                 return BadRequest(ModelState);
             }
 
-            var poster = Data.Users.FirstOrDefault(u => u.Id == model.PosterId);
+            var poster = Data.Users.GetAll().FirstOrDefault(u => u.Id == model.PosterId);
 
             if (poster == null)
             {
@@ -83,7 +85,7 @@
             };
 
             messagesRepository.Add(message);
-            messagesRepository.Save();
+            messagesRepository.SaveChanges();
 
             return Ok(string.Format("Message from user with id = {0} successfully sent!", poster.Id));
         }

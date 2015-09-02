@@ -6,13 +6,15 @@ namespace WebChat.DataLayer.Contracts
 {
     public interface IWebChatContext
     {
-        DbSet<Tag> Tags { get; set; }
+        IDbSet<UserSession> UserSessions { get; set; }
 
-        DbSet<Room> Rooms { get; set; }
+        IDbSet<Tag> Tags { get; set; }
 
-        DbSet<Message> Messages { get; set; }
+        IDbSet<Room> Rooms { get; set; }
 
-        DbSet<Notification> Notifications { get; set; }
+        IDbSet<Message> Messages { get; set; }
+
+        IDbSet<Notification> Notifications { get; set; }
 
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 

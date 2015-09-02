@@ -59,15 +59,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IWebChatContext.cs" />
+    <Compile Include="Contracts\IWebChatData.cs" />
+    <Compile Include="Data\WebChatData.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="DatabaseInitMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Data\GenericRepository.cs" />
     <Compile Include="Contracts\IGenericRepository.cs" />
-    <Compile Include="Repositories\MessagesRepository.cs" />
-    <Compile Include="Repositories\NotificationsRepository.cs" />
-    <Compile Include="Repositories\RoomsRepository.cs" />
-    <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="WebChatContext.cs" />
   </ItemGroup>
   <ItemGroup>

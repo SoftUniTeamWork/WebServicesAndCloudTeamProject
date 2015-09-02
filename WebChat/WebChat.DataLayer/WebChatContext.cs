@@ -1,12 +1,9 @@
-﻿using System.Data.Entity.ModelConfiguration.Conventions;
-
-namespace WebChat.DataLayer
+﻿namespace WebChat.DataLayer
 {
     using System.Data.Entity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using Models;
     using Contracts;
-
+    using Models;
     public class WebChatContext : IdentityDbContext<ApplicationUser>, IWebChatContext
     {
         public WebChatContext()
@@ -16,13 +13,15 @@ namespace WebChat.DataLayer
                   new DropCreateDatabaseAlways<WebChatContext>());
         }
 
-        public DbSet<Tag> Tags { get; set; }
+        public IDbSet<Tag> Tags { get; set; }
 
-        public DbSet<Room> Rooms { get; set; }
+        public IDbSet<Room> Rooms { get; set; }
 
-        public DbSet<Message> Messages { get; set; }
+        public IDbSet<Message> Messages { get; set; }
 
-        public DbSet<Notification> Notifications { get; set; }
+        public IDbSet<Notification> Notifications { get; set; }
+
+        public IDbSet<UserSession> UserSessions { get; set; }
 
         public static WebChatContext Create()
         {

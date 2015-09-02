@@ -1,19 +1,13 @@
 ﻿namespace WebChat.Services.Controllers
 {
     using System.Web.Http;
-    using DataLayer;
+    using DataLayer.Contracts;
     public class BaseApiController : ApiController
     {
-
-        protected BaseApiController() 
-            : this (new WebChatContext())
-        {
-        }
-
-        public BaseApiController(WebChatContext data)
+        public BaseApiController(IWebChatData data)
         {
             this.Data = data;
         }
-        protected WebChatContext Data { get; set; }
+        protected IWebChatData Data { get; set; }
     }
 }

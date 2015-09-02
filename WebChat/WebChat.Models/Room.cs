@@ -1,43 +1,62 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
-namespace WebChat.Models
+﻿namespace WebChat.Models
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class Room
     {
+        private ICollection<Tag> tags;
+        private ICollection<Notification> notifications;
+        private ICollection<Message> messages;
+        private ICollection<ApplicationUser> users;
+
         public Room()
         {
-            this.Notifications = new HashSet<Notification>();
-            this.Users = new HashSet<ApplicationUser>();
-            this.Tags = new HashSet<Tag>();
-            this.Messages = new HashSet<Message>();
+            this.notifications = new HashSet<Notification>();
+            this.users = new HashSet<ApplicationUser>();
+            this.tags = new HashSet<Tag>();
+            this.messages = new HashSet<Message>();
             this.Size = 20;
         }
         
+        [Key]
         public int Id { get; set; }
 
         public string Password { get; set; }
 
-        [DefaultValue(RoomType.Private)]
         public RoomType Type { get; set; }
 
-        [DefaultValue(20)]
         [Range(0,50)]
         public int Size { get; set; }
 
         [Required]
+        [MinLength(5)]
         [MaxLength(20)]
         public string Name { get; set; }
 
         [Required]
-        public virtual ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<Tag> Tags
+        {
+            get { return this.tags; }
+            set { this.tags = value; }
+        }
 
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Message> Messages
+        {
+            get { return this.messages; }
+            set { this.messages = value; }
+        }
 
-        public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<Notification> Notifications
+        {
+            get { return this.notifications; }
+            set { this.notifications = value; }
+        }
 
-        public virtual ICollection<ApplicationUser> Users { get; set; }
-
+        public virtual ICollection<ApplicationUser> Users
+        {
+            get { return this.users; }
+            set { this.users = value; }
+        }
     }
 }

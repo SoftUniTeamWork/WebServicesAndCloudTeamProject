@@ -1,25 +1,33 @@
-﻿namespace WebChat.Models
+﻿
+
+using System.Web.Http;
+
+namespace WebChat.Models
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
+    [RoutePrefix("api/user")]
     public class ApplicationUser : IdentityUser
     {
+        private ICollection<Message> messages;
+
         public ApplicationUser()
         {
-            this.Messages = new HashSet<Message>();
-            this.Notifications = new HashSet<Notification>();
+            this.messages = new HashSet<Message>();
         }
 
         public string CurrentLocation { get; set; }
 
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Message> Messages
+        {
+            get { return this.messages; }
+            set { this.messages = value; }
 
-        public ICollection<Notification> Notifications { get; set; }
+        }
 
         public virtual Room Room { get; set; }
 
@@ -34,6 +42,6 @@
             return userIdentity;
         }
 
-        
+
     }
 }

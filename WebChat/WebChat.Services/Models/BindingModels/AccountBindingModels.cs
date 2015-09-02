@@ -35,6 +35,11 @@ namespace WebChat.Services.Models
     public class RegisterBindingModel
     {
         [Required]
+        [MinLength(5)]
+        [MaxLength(20)]
+        public string Username { get; set; }
+
+        [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
