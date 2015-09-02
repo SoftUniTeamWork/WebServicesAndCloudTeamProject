@@ -1,18 +1,19 @@
-﻿using WebChat.DataLayer.Data;
-
-namespace WebChat.Services.Controllers
+﻿namespace WebChat.Services.Controllers
 {
     using System;
     using System.Linq;
     using System.Web.Http;
     using Microsoft.AspNet.Identity;
     using WebChat.Models;
-    using Models;
     using DataLayer.Contracts;
+    using DataLayer.Data;
+    using Models.BindingModels;
+    using Models.ViewModels;
 
     public class MessageController : BaseApiController
     {
         private readonly IGenericRepository<Message> messagesRepository;
+
         public MessageController()
             : this(new WebChatData())
         {
@@ -23,7 +24,6 @@ namespace WebChat.Services.Controllers
         {
         }
 
-
         [HttpGet]
         public IHttpActionResult GetAllMessages(int roomId)
         {
@@ -31,7 +31,7 @@ namespace WebChat.Services.Controllers
 
             if (room == null)
             {
-                return this.BadRequest(string.Format("Room with id {0} doesn't exist",roomId));
+                return this.BadRequest(string.Format("Room with id {0} doesn't exist", roomId));
             }
 
             var messages = this.Data.Messages.GetAll()
@@ -56,10 +56,6 @@ namespace WebChat.Services.Controllers
             {
                 return this.Unauthorized();
             }
-            if (model == null)
-            {
-                return BadRequest("Model cannot be null (no data in request)");
-            }
             if (sendingUser == null)
             {
                 return this.BadRequest("Invalid id of the sender");
@@ -70,7 +66,6 @@ namespace WebChat.Services.Controllers
             }
 
             var poster = Data.Users.GetAll().FirstOrDefault(u => u.Id == model.PosterId);
-
             if (poster == null)
             {
                 return this.BadRequest(string.Format("User with id:{0} does not exist", poster.Id));

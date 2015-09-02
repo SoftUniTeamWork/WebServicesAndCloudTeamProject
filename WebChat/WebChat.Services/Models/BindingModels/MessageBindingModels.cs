@@ -1,4 +1,4 @@
-﻿namespace WebChat.Services.Models
+﻿namespace WebChat.Services.Models.BindingModels
 {
     public class MessageBindingModel
     {

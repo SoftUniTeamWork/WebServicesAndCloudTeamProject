@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebChat.Services.Models
+namespace WebChat.Services.Models.BindingModels
 {
     // Models used as parameters to AccountController actions.
 

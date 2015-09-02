@@ -6,6 +6,7 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Contracts;
     using Models;
+
     public class WebChatData : IWebChatData
     {
         private readonly DbContext context;

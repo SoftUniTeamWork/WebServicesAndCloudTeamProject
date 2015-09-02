@@ -206,13 +206,19 @@
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BindingModels\AccountBindingModels.cs" />
+    <Compile Include="Models\BindingModels\CreateRoomBindingModel.cs" />
+    <Compile Include="Models\Utilities\Parse.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\BindingModels\MessageBindingModels.cs" />
+    <Compile Include="Models\BindingModels\UpdateRoomBindingModel.cs" />
+    <Compile Include="Models\BindingModels\DeleteRoomBindingModel.cs" />
     <Compile Include="Models\ViewModels\MessageViewModels.cs" />
+    <Compile Include="Models\ViewModels\RoomViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />

@@ -17,6 +17,8 @@ namespace WebChat.Services.Controllers
     using Microsoft.Owin.Security.Cookies;
     using Microsoft.Owin.Security.OAuth;
     using Models;
+    using Models.BindingModels;
+    using Models.ViewModels;
     using Providers;
     using Results;
 

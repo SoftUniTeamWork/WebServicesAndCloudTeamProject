@@ -8,6 +8,7 @@
         {
             this.Data = data;
         }
+
         protected IWebChatData Data { get; set; }
     }
 }

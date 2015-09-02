@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace WebChat.Services.Models
+namespace WebChat.Services.Models.ViewModels
 {
     // Models returned by AccountController actions.
 

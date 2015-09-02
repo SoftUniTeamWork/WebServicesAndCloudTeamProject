@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
-using Microsoft.Ajax.Utilities;
 using WebChat.Models;
 
-namespace WebChat.Services.Models
+namespace WebChat.Services.Models.ViewModels
 {
     public class MessageViewModel
     {

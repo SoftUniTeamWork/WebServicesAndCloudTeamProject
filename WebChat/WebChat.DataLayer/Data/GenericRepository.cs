@@ -80,8 +80,6 @@ namespace WebChat.DataLayer.Repositories
             entry.State = state;
         }
 
-        
-
         public T Detach(T entity)
         {
             ChangeEntityState(entity, EntityState.Detached);
