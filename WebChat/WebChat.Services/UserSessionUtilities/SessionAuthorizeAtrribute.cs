@@ -31,7 +31,7 @@ namespace WebChat.Services.UserSessionUtilities
                 return;
             }   
 
-            var userSessionManager = new UserSessionManager();
+            var userSessionManager = new UserSessionManager(actionContext.Request.GetOwinContext());
             if (userSessionManager.ReValidateSession())
             {
                 base.OnAuthorization(actionContext);

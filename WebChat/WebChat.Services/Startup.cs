@@ -3,7 +3,6 @@ using Owin;
 using WebChat.Services;
 
 [assembly: OwinStartup(typeof(Startup))]
-
 namespace WebChat.Services
 {
     public partial class Startup

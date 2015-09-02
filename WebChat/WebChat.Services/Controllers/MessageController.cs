@@ -12,8 +12,6 @@
 
     public class MessageController : BaseApiController
     {
-        private readonly IGenericRepository<Message> messagesRepository;
-
         public MessageController()
             : this(new WebChatData())
         {
@@ -43,46 +41,6 @@
             return this.Ok(messages);
         }
 
-        [Authorize]
-        [HttpPost]
-        public IHttpActionResult AddMessage(int roomId, MessageBindingModel model)
-        {
-            var userId = this.User.Identity.GetUserId();
-            var room = this.Data.Rooms.GetAll().FirstOrDefault(r => r.Id == roomId);
-            var sendingUser = this.Data.Users.GetAll()
-                .FirstOrDefault(u => u.Id == userId);
-
-            if (userId == null)
-            {
-                return this.Unauthorized();
-            }
-            if (sendingUser == null)
-            {
-                return this.BadRequest("Invalid id of the sender");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var poster = Data.Users.GetAll().FirstOrDefault(u => u.Id == model.PosterId);
-            if (poster == null)
-            {
-                return this.BadRequest(string.Format("User with id:{0} does not exist", poster.Id));
-            }
-
-            var message = new Message
-            {
-                Text = model.Text,
-                Poster = poster,
-                SentDate = DateTime.Now,
-                Room = room
-            };
-
-            messagesRepository.Add(message);
-            messagesRepository.SaveChanges();
-
-            return Ok(string.Format("Message from user with id = {0} successfully sent!", poster.Id));
-        }
+        
     }
 }

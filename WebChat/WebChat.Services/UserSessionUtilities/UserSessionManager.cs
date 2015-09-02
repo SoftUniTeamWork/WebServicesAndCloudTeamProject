@@ -1,4 +1,6 @@
-﻿namespace WebChat.Services.UserSessionUtilities
+﻿using Microsoft.Owin;
+
+namespace WebChat.Services.UserSessionUtilities
 {
     using System;
     using System.Net.Http;
@@ -13,14 +15,16 @@
     {
         private static readonly TimeSpan DefaultSessionTimeout = new TimeSpan(0, 0, 30, 0);
         protected IWebChatData Data { get; private set; }
+        protected IOwinContext Context { get; set; }
 
-        public UserSessionManager(IWebChatData data)
+        public UserSessionManager(IWebChatData data, IOwinContext context)
         {
             this.Data = data;
+            this.Context = context;
         }
 
-        public UserSessionManager() 
-            : this(new WebChatData())
+        public UserSessionManager(IOwinContext context) 
+            : this(new WebChatData(), context)
         {
         }
 

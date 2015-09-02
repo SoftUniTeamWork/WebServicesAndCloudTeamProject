@@ -2,32 +2,31 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Contracts;
+    using Repositories;
     using Models;
-
     public class WebChatData : IWebChatData
     {
-        private readonly DbContext context;
+        private readonly IWebChatContext context;
 
-        private readonly IDictionary<Type, object> repositories;
+        private readonly IDictionary<Type, object> dataRepositories;
 
         public WebChatData()
             : this(new WebChatContext())
         {
         }
 
-        public WebChatData(DbContext context)
+        public WebChatData(IWebChatContext context)
         {
             this.context = context;
-            this.repositories = new Dictionary<Type, object>();
+            this.dataRepositories = new Dictionary<Type, object>();
         }
         public IGenericRepository<ApplicationUser> Users
         {
             get
             {
-                return this.GetRepository<ApplicationUser>();
+                return this.SetRepositoryType<ApplicationUser>();
             }
         }
 
@@ -35,7 +34,7 @@
         {
             get
             {
-                return this.GetRepository<IdentityRole>();
+                return this.SetRepositoryType<IdentityRole>();
             }
         }
 
@@ -43,7 +42,7 @@
         {
             get
             {
-                return this.GetRepository<Room>();
+                return this.SetRepositoryType<Room>();
             }
         }
 
@@ -51,7 +50,7 @@
         {
             get
             {
-                return this.GetRepository<Notification>();
+                return this.SetRepositoryType<Notification>();
             }
         }
 
@@ -59,7 +58,7 @@
         {
             get
             {
-                return this.GetRepository<Message>();
+                return this.SetRepositoryType<Message>();
             }
         }
 
@@ -67,7 +66,7 @@
         {
             get
             {
-                return this.GetRepository<UserSession>();
+                return this.SetRepositoryType<UserSession>();
             }
         }
 
@@ -75,7 +74,7 @@
         {
             get
             {
-                return this.GetRepository<Tag>();
+                return this.SetRepositoryType<Tag>();
             }
         }
 
@@ -84,15 +83,17 @@
             return this.context.SaveChanges();
         }
 
-        private IGenericRepository<T> GetRepository<T>() where T : class
+        private IGenericRepository<T> SetRepositoryType<T>() where T : class
         {
-            if (!this.repositories.ContainsKey(typeof(T)))
+            var typeOfModel = typeof(T);
+
+            if (!this.dataRepositories.ContainsKey(typeOfModel))
             {
-                var type = typeof(IGenericRepository<T>);
-                this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));
+                var type = typeof(GenericRepositorty<T>);
+                this.dataRepositories.Add(typeOfModel, Activator.CreateInstance(type, this.context));
             }
 
-            return (IGenericRepository<T>)this.repositories[typeof(T)];
-        }
+            return this.dataRepositories[typeOfModel] as IGenericRepository<T>;
+        } 
     }
 }
