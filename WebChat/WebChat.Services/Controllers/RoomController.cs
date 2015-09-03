@@ -13,10 +13,6 @@
 
     public class RoomController : BaseApiController
     {
-        private readonly IGenericRepository<Room> roomRepository;
-
-        private readonly IGenericRepository<Message> messagesRepository;
-
         public RoomController()
             : this(new WebChatData())
         {
@@ -79,8 +75,8 @@
                 Name = model.Name
             };
 
-            roomRepository.Add(room);
-            roomRepository.SaveChanges();
+            this.Data.Rooms.Add(room);
+            this.Data.SaveChanges();
 
             return Ok(string.Format("Room with id: {0}, successfully created", room.Id));
         }
@@ -109,8 +105,8 @@
                 return Ok(string.Format("No room with id: {0}", model.RoomId));
             }
 
-            roomRepository.Delete(room);
-            roomRepository.SaveChanges();
+            this.Data.Rooms.Delete(room);
+            this.Data.Rooms.SaveChanges();
 
             return Ok(string.Format("Room with id: {0}, successfully deleted", model.RoomId));
         }
@@ -152,7 +148,7 @@
                 room.Type = Convert.ParseRoomType(model.Type);
             }
 
-            roomRepository.SaveChanges();
+            this.Data.Rooms.SaveChanges();
 
             return Ok(string.Format("Room with id: {0}, successfully updated", model.RoomId));
         }
