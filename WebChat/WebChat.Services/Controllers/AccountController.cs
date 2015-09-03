@@ -12,7 +12,6 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Testing;
-    using Microsoft.VisualStudio.Web.PageInspector.Runtime;
     using DataLayer;
     using DataLayer.Contracts;
     using DataLayer.Data;

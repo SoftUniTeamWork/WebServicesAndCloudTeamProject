@@ -3,14 +3,16 @@
     using System.Data.Entity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Contracts;
+    using Migrations;
     using Models;
+
     public class WebChatContext : IdentityDbContext<ApplicationUser>, IWebChatContext
     {
         public WebChatContext()
             : base("name=WebChatContext")
         {
             Database.SetInitializer(
-                  new DropCreateDatabaseAlways<WebChatContext>());
+                  new MigrateDatabaseToLatestVersion<WebChatContext, Configuration>());
         }
 
         public IDbSet<Tag> Tags { get; set; }
@@ -27,6 +29,5 @@
         {
             return new WebChatContext();
         }
-
     }
 }
