@@ -223,11 +223,13 @@
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
-    <Compile Include="Controllers\RoomController.cs" />
+    <Compile Include="Controllers\RoomsController.cs" />
+    <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BindingModels\CreateRoomBindingModel.cs" />
+    <Compile Include="Models\BindingModels\CreateTagBindingModel.cs" />
     <Compile Include="Models\BindingModels\User\ChangePasswordBindingModel.cs" />
     <Compile Include="Models\BindingModels\User\EditUserProfileBindingModel.cs" />
     <Compile Include="Models\BindingModels\User\GetUserMessagesBindingModel.cs" />

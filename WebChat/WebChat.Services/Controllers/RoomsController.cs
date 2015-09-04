@@ -11,18 +11,18 @@
     using Models.ViewModels;
     using WebChat.Models;
 
-    public class RoomController : BaseApiController
+    public class RoomsController : BaseApiController
     {
-        public RoomController()
+        public RoomsController()
             : this(new WebChatData())
         {
         }
 
-        public RoomController(IWebChatData data)
+        public RoomsController(IWebChatData data)
             : base(data)
         {
         }
-
+        
         [Authorize]
         [HttpGet]
         [ActionName("allrooms")]
@@ -33,11 +33,7 @@
             if (userId == null)
             {
                 return this.Unauthorized();
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+             }
 
             IEnumerable<RoomViewModel> rooms = this.Data.Rooms.GetAll()
                 .Select(RoomViewModel.Create).OrderByDescending(r => r.Name).AsEnumerable();
@@ -48,9 +44,10 @@
             //    .OrderByDescending(m => m.SentDate)
             //    .AsQueryable();
 
-            return Ok(rooms);
+            return this.Ok(rooms);
         }
 
+        
         [Authorize]
         [HttpPost]
         [ActionName("createroom")]

@@ -10,7 +10,7 @@ namespace WebChat.Services.UserSessionUtilities
     using DataLayer.Contracts;
     using DataLayer.Data;
 
-    public class SessionAuthorizeAttribute : System.Web.Http.AuthorizeAttribute
+    public class SessionAuthorizeAttribute : AuthorizeAttribute
      {
         protected IWebChatData Data { get; private set; }
 

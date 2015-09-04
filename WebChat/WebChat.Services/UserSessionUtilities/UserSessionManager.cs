@@ -13,7 +13,7 @@ namespace WebChat.Services.UserSessionUtilities
 
     public class UserSessionManager
     {
-        private static readonly TimeSpan DefaultSessionTimeout = new TimeSpan(0, 0, 30, 0);
+        private static readonly TimeSpan DefaultSessionTimeout = new TimeSpan(365,0,0,0);
         protected IWebChatData Data { get; private set; }
         protected IOwinContext Context { get; set; }
 
@@ -28,36 +28,25 @@ namespace WebChat.Services.UserSessionUtilities
         {
         }
 
-        private HttpRequestMessage CurrentRequest
-        {
-            get
-            {
-                return (HttpRequestMessage)HttpContext.Current.Items["MS_HttpRequestMessage"];
-            }
-        }
-
         /// <returns>The current bearer authorization token from the HTTP headers</returns>
         private string GetCurrentBearerAuthrorizationToken()
         {
             string authToken = null;
-            if (CurrentRequest.Headers.Authorization != null)
+            if (this.Context.Request.Headers["Authorization"] != null)
             {
-                if (CurrentRequest.Headers.Authorization.Scheme == "Bearer")
-                {
-                    authToken = CurrentRequest.Headers.Authorization.Parameter;
-                }
+                authToken = this.Context.Request.Headers["Authorization"];
             }
             return authToken;
         }
 
         private string GetCurrentUserId()
         {
-            if (HttpContext.Current.User == null)
+            if (Context.Authentication.User.Identity  == null)
             {
                 return null;
             }
-            string userId = HttpContext.Current.User.Identity.GetUserId();
-            return userId;
+
+            return this.Context.Authentication.User.Identity.GetUserId();
         }
 
         /// <summary>
@@ -107,9 +96,14 @@ namespace WebChat.Services.UserSessionUtilities
         public bool ReValidateSession()
         {
             string authToken = this.GetCurrentBearerAuthrorizationToken();
+            if (authToken != null)
+            {
+                authToken = authToken.Substring(7);
+            }
+
             var currentUserId = this.GetCurrentUserId();
-            var userSession = this.Data.UserSessions.GetAll().FirstOrDefault(session =>
-                session.AuthToken == authToken && session.OwnerUserId == currentUserId);
+            var userSession = this.Data.UserSessions.GetAll()
+                .FirstOrDefault(session => session.AuthToken == authToken && session.OwnerUserId == currentUserId);
 
             if (userSession == null)
             {

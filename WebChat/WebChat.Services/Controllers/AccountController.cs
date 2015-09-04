@@ -103,6 +103,10 @@
                 return this.BadRequest("Invalid user data");
             }
 
+            if (this.User.Identity.GetUserId() != null)
+            {
+                return this.BadRequest("Already logged in!");
+            }
             // Invoke the "token" OWIN service to perform the login (POST /api/token)
             // Use Microsoft.Owin.Testing.TestServer to perform in-memory HTTP POST request
             var testServer = TestServer.Create<Startup>();
@@ -128,7 +132,7 @@
                 var userSessionManager = new UserSessionManager(this.Request.GetOwinContext());
                 userSessionManager.CreateUserSession(username, authToken);
 
-                // Cleanup: delete expired sessions fromthe database
+                // Cleanup: delete expired sessions from the database
                 userSessionManager.DeleteExpiredSessions();
             }
 
