@@ -30,13 +30,12 @@ namespace WebChat.Services.Controllers
         public IHttpActionResult GetAll()
         {
             var userId = this.User.Identity.GetUserId();
+            var rooms = this.Data.Rooms.GetAll()
+                .Select(RoomViewModel.Create).OrderByDescending(r => r.Name);
             if (userId == null)
             {
                 return this.Unauthorized();
              }
-
-            var rooms = this.Data.Rooms.GetAll()
-                .Select(RoomViewModel.Create).OrderByDescending(r => r.Name);
              
             return this.Ok(rooms);
         }
@@ -76,10 +75,10 @@ namespace WebChat.Services.Controllers
         [SessionAuthorize]
         [HttpDelete]
         [ActionName("deleteroom")]
-        public IHttpActionResult DeleteRoom(DeleteRoomBindingModel model)
+        public IHttpActionResult DeleteRoom(int roomId)
         {
             var userId = this.User.Identity.GetUserId();
-
+            var room = Data.Rooms.GetById(roomId);
             if (userId == null)
             {
                 return this.Unauthorized();
@@ -90,17 +89,15 @@ namespace WebChat.Services.Controllers
                 return BadRequest(ModelState);
             }
 
-            var room = Data.Rooms.GetById(model.RoomId);
-
             if (room == null)
             {
-                return Ok(string.Format("No room with id: {0}", model.RoomId));
+                return Ok(string.Format("No room with id: {0}", roomId));
             }
 
             this.Data.Rooms.Delete(room);
             this.Data.Rooms.SaveChanges();
 
-            return Ok(string.Format("Room with id: {0}, successfully deleted", model.RoomId));
+            return Ok(string.Format("Room with id: {0}, successfully deleted", roomId));
         }
 
         [SessionAuthorize]
@@ -133,9 +130,8 @@ namespace WebChat.Services.Controllers
             this.Data.SaveChanges();
 
             return this.Ok("User has successfully joined the room!");
-
         }
-
+        /*
         [SessionAuthorize]
         [HttpPut]
         [ActionName("updateroom")]
@@ -176,6 +172,30 @@ namespace WebChat.Services.Controllers
             this.Data.Rooms.SaveChanges();
 
             return Ok(string.Format("Room with id: {0}, successfully updated", model.RoomId));
+        }
+        */
+        [SessionAuthorize]
+        [HttpPost]
+        [Route("api/rooms/{roomId}/quit")]
+        public IHttpActionResult QuitRoom(int roomId)
+        {
+            var room = this.Data.Rooms.GetById(roomId);
+            var userId = this.User.Identity.GetUserId();
+            var user = this.Data.Users.GetById(userId);
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
+            if (room == null)
+            {
+                return this.BadRequest("Room with such id doesn't exist!");
+            }
+
+            room.Users.Remove(user);
+            this.Data.SaveChanges();
+
+            return this.Ok("User quited the room successfully!");
         }
     }
 }

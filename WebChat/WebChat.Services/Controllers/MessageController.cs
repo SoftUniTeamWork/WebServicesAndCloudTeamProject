@@ -26,7 +26,7 @@ namespace WebChat.Services.Controllers
 
         [SessionAuthorize]
         [HttpGet]
-        public IHttpActionResult GetAllMessages(int roomId)
+        public IHttpActionResult GetAll(int roomId)
         {
             var room = this.Data.Rooms.GetById(roomId); ;
 
