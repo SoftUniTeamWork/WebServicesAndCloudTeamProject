@@ -59,6 +59,11 @@
         [Route("Register")]
         public async Task<IHttpActionResult> RegisterUser(RegisterUserBindingModel model)
         {
+            if (this.User.Identity.GetUserId() != null)
+            {
+                return this.BadRequest("User is already logged in.");
+            }
+
             if (model == null)
             {
                 return this.BadRequest("Invalid user data");
@@ -67,6 +72,11 @@
             if (!ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            if (!this.Data.Users.GetAll().Any(u => u.Email == model.Email))
+            {
+                return this.BadRequest("That email is already used by ranother user");
             }
 
             var user = new ApplicationUser
@@ -98,15 +108,16 @@
         [Route("Login")]
         public async Task<IHttpActionResult> LoginUser(LoginUserBindingModel model)
         {
+            if (this.User.Identity.GetUserId() != null)
+            {
+                return this.BadRequest("Already logged in!");
+            }
+
             if (model == null)
             {
                 return this.BadRequest("Invalid user data");
             }
 
-            if (this.User.Identity.GetUserId() != null)
-            {
-                return this.BadRequest("Already logged in!");
-            }
             // Invoke the "token" OWIN service to perform the login (POST /api/token)
             // Use Microsoft.Owin.Testing.TestServer to perform in-memory HTTP POST request
             var testServer = TestServer.Create<Startup>();
@@ -148,7 +159,7 @@
             // This does not actually perform logout! The OWIN OAuth implementation
             // does not support "revoke OAuth token" (logout) by design.
             this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalBearer);
-            
+
             // Delete the user's session from the database (revoke its bearer token)
             var userSessionManager = new UserSessionManager(this.Request.GetOwinContext());
             userSessionManager.InvalidateUserSession();
@@ -204,7 +215,7 @@
             return this.Ok(
                 new
                 {
-                    message = string.Format("Message from user with id {0} created successfully.",currentUserId),
+                    message = string.Format("Message from user with id {0} created successfully.", currentUserId),
                     messageId = message.Id
                 }
             );

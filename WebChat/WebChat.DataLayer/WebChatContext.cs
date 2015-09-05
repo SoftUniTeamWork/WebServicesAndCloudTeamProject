@@ -23,6 +23,8 @@
 
         public IDbSet<Notification> Notifications { get; set; }
 
+        public IDbSet<UserRoomSession> UserRoomSessions { get; set; }
+
         public IDbSet<UserSession> UserSessions { get; set; }
 
         public static WebChatContext Create()

@@ -79,6 +79,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="RoomType.cs" />
     <Compile Include="Tag.cs" />
+    <Compile Include="UserRoomSession.cs" />
     <Compile Include="UserSession.cs" />
   </ItemGroup>
   <ItemGroup>

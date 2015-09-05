@@ -17,7 +17,9 @@ namespace WebChat.DataLayer.Contracts
 
         IGenericRepository<UserSession> UserSessions { get; }
 
-        IGenericRepository<Tag> Tags { get; } 
+        IGenericRepository<Tag> Tags { get; }
+
+        IGenericRepository<UserRoomSession> UserRoomSessions { get; }
 
         int SaveChanges();
     }

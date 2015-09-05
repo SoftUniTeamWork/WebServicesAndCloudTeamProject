@@ -16,6 +16,8 @@ namespace WebChat.DataLayer.Contracts
 
         IDbSet<Notification> Notifications { get; set; }
 
+        IDbSet<UserRoomSession> UserRoomSessions { get; set; }
+
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

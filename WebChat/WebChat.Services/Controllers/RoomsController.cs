@@ -1,16 +1,17 @@
-﻿namespace WebChat.Services.Controllers
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Http;
-    using DataLayer.Contracts;
-    using DataLayer.Data;
-    using Microsoft.AspNet.Identity;
-    using Models.BindingModels;
-    using Models.Utilities;
-    using Models.ViewModels;
-    using WebChat.Models;
+﻿using System;
+using System.Linq;
+using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using WebChat.DataLayer.Contracts;
+using WebChat.DataLayer.Data;
+using WebChat.Models;
+using WebChat.Services.Models.BindingModels;
+using WebChat.Services.Models.ViewModels;
+using WebChat.Services.UserSessionUtilities;
+using Convert = WebChat.Services.Models.Utilities.Convert;
 
+namespace WebChat.Services.Controllers
+{
     public class RoomsController : BaseApiController
     {
         public RoomsController()
@@ -22,33 +23,26 @@
             : base(data)
         {
         }
-        
-        [Authorize]
+
+        [SessionAuthorize]
         [HttpGet]
         [ActionName("allrooms")]
         public IHttpActionResult GetAll()
         {
             var userId = this.User.Identity.GetUserId();
-
             if (userId == null)
             {
                 return this.Unauthorized();
              }
 
-            IEnumerable<RoomViewModel> rooms = this.Data.Rooms.GetAll()
-                .Select(RoomViewModel.Create).OrderByDescending(r => r.Name).AsEnumerable();
-
-            //var messages = this.Data.Messages.GetAll()
-            //    .Where(m => m.Room.Id == room.Id)
-            //    .Select(MessageViewModel.Create)
-            //    .OrderByDescending(m => m.SentDate)
-            //    .AsQueryable();
-
+            var rooms = this.Data.Rooms.GetAll()
+                .Select(RoomViewModel.Create).OrderByDescending(r => r.Name);
+             
             return this.Ok(rooms);
         }
 
-        
-        [Authorize]
+
+        [SessionAuthorize]
         [HttpPost]
         [ActionName("createroom")]
         public IHttpActionResult CreateRoom(CreateRoomBindingModel model)
@@ -59,12 +53,13 @@
             {
                 return this.Unauthorized();
             }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Room room = new Room
+            var room = new Room
             {
                 Password = model.Password,
                 Type = Convert.ParseRoomType(model.Type),
@@ -78,7 +73,7 @@
             return Ok(string.Format("Room with id: {0}, successfully created", room.Id));
         }
 
-        [Authorize]
+        [SessionAuthorize]
         [HttpDelete]
         [ActionName("deleteroom")]
         public IHttpActionResult DeleteRoom(DeleteRoomBindingModel model)
@@ -95,7 +90,7 @@
                 return BadRequest(ModelState);
             }
 
-            Room room = Data.Rooms.GetById(model.RoomId);
+            var room = Data.Rooms.GetById(model.RoomId);
 
             if (room == null)
             {
@@ -108,7 +103,40 @@
             return Ok(string.Format("Room with id: {0}, successfully deleted", model.RoomId));
         }
 
-        [Authorize]
+        [SessionAuthorize]
+        [HttpPost]
+        [Route("api/rooms/{roomId}/join")]
+        public IHttpActionResult JoinRoom(int roomId)
+        {
+            var userId = this.User.Identity.GetUserId();
+            var user = this.Data.Users.GetById(userId);
+            var room = this.Data.Rooms.GetById(roomId);
+
+            if (user == null)
+            {
+                return this.Unauthorized();
+            }
+
+            if (room == null)
+            {
+                this.BadRequest("There is no room with such id");
+            }
+            
+            var session = new UserRoomSession()
+            {
+                JoinDate = DateTime.Now,
+                User = user,
+                Room = room
+            };
+
+            this.Data.UserRoomSessions.Add(session);
+            this.Data.SaveChanges();
+
+            return this.Ok("User has successfully joined the room!");
+
+        }
+
+        [SessionAuthorize]
         [HttpPut]
         [ActionName("updateroom")]
         public IHttpActionResult UpdateRoom(UpdateRoomBindingModel model)

@@ -78,6 +78,11 @@
             }
         }
 
+        public IGenericRepository<UserRoomSession> UserRoomSessions
+        {
+            get { return this.SetRepositoryType<UserRoomSession>(); }
+        }
+
         public int SaveChanges()
         {
             return this.context.SaveChanges();
@@ -94,6 +99,9 @@
             }
 
             return this.dataRepositories[typeOfModel] as IGenericRepository<T>;
-        } 
+        }
+
+
+        
     }
 }
