@@ -74,9 +74,9 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            if (!this.Data.Users.GetAll().Any(u => u.Email == model.Email))
+            if (this.Data.Users.GetAll().Any(u => u.Email == model.Email))
             {
-                return this.BadRequest("That email is already used by ranother user");
+                return this.BadRequest("That email is already used by another user");
             }
 
             var user = new ApplicationUser
