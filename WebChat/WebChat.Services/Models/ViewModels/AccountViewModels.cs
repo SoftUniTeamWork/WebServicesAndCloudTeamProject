@@ -4,39 +4,16 @@ namespace WebChat.Services.Models.ViewModels
 {
     // Models returned by AccountController actions.
 
-    public class ExternalLoginViewModel
+    public class UserProfileViewModel
     {
-        public string Name { get; set; }
+        public object Id { get; set; }
 
-        public string Url { get; set; }
-
-        public string State { get; set; }
-    }
-
-    public class ManageInfoViewModel
-    {
-        public string LocalLoginProvider { get; set; }
+        public string Username { get; set; }
 
         public string Email { get; set; }
 
-        public IEnumerable<UserLoginInfoViewModel> Logins { get; set; }
-
-        public IEnumerable<ExternalLoginViewModel> ExternalLoginProviders { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
-    public class UserInfoViewModel
-    {
-        public string Email { get; set; }
-
-        public bool HasRegistered { get; set; }
-
-        public string LoginProvider { get; set; }
-    }
-
-    public class UserLoginInfoViewModel
-    {
-        public string LoginProvider { get; set; }
-
-        public string ProviderKey { get; set; }
-    }
+    
 }

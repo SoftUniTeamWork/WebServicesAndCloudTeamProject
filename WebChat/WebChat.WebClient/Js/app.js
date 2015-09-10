@@ -21,10 +21,10 @@ var app = app || {};
         var selector = '#wrapper';
 
         this.get('#/', function () {
-           // $.get('Templates/Login.html', function (template) {
-             //   var outerHtml = Mustache.render(template);
-               // $(selector).html(outerHtml);
-           // })
+            //$.get('Templates/Login.html', function (template) {
+            //    var outerHtml = Mustache.render(template);
+            //    $(selector).html(outerHtml);
+            //})
             userView.loadLogin();
 
         });

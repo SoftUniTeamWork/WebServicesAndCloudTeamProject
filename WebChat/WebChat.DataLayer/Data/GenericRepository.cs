@@ -6,12 +6,12 @@ using WebChat.DataLayer.Contracts;
 
 namespace WebChat.DataLayer.Repositories
 {
-    public class GenericRepositorty<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly DbContext context;
         private readonly IDbSet<T> set; 
 
-        public GenericRepositorty(DbContext onlineShopContext)
+        public GenericRepository(DbContext onlineShopContext)
         {
             this.context = onlineShopContext;
             this.set = context.Set<T>();
@@ -64,9 +64,9 @@ namespace WebChat.DataLayer.Repositories
             this.Delete(this.GetById(id));
         }
 
-        public int SaveChanges()
+        public void SaveChanges()
         {
-            return this.context.SaveChanges();
+            this.context.SaveChanges();
         }
 
         private void ChangeEntityState(T entity, EntityState state)

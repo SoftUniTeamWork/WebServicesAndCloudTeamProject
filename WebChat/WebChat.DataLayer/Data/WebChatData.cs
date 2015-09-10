@@ -94,7 +94,7 @@
 
             if (!this.dataRepositories.ContainsKey(typeOfModel))
             {
-                var type = typeof(GenericRepositorty<T>);
+                var type = typeof(GenericRepository<T>);
                 this.dataRepositories.Add(typeOfModel, Activator.CreateInstance(type, this.context));
             }
 

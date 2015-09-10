@@ -4,6 +4,7 @@
 
     public class ChangePasswordBindingModel
     {
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]

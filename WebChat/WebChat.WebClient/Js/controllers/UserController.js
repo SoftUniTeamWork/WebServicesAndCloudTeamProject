@@ -21,8 +21,8 @@ app.userController = (function() {
     UserController.prototype.login = function() {
         $('#sign-in').on('click', function () {
             var data = {
-                Username: $('login-username').val(),
-                Password: $('login-password').val(),
+                Username: $('#login-username').val(),
+                Password: $('#login-password').val(),
                 'grant_type': "Password"
             };
             console.log(data);

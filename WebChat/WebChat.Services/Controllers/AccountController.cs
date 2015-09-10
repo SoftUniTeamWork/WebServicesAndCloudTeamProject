@@ -1,4 +1,6 @@
-﻿namespace WebChat.Services.Controllers
+﻿using WebChat.Services.Providers;
+
+namespace WebChat.Services.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -24,10 +26,12 @@
     public class AccountController : BaseApiController
     {
         private ApplicationUserManager userManager;
+        private readonly IIdProvider idProvider;
 
-        public AccountController(IWebChatData data)
+        public AccountController(IWebChatData data, IIdProvider idProvider)
             : base(data)
         {
+            this.idProvider = idProvider;
         }
 
         public AccountController()
@@ -59,7 +63,7 @@
         [Route("Register")]
         public async Task<IHttpActionResult> RegisterUser(RegisterUserBindingModel model)
         {
-            if (this.User.Identity.GetUserId() != null)
+            if (this.idProvider.GetId() != null)
             {
                 return this.BadRequest("User is already logged in.");
             }
@@ -108,7 +112,7 @@
         [Route("Login")]
         public async Task<IHttpActionResult> LoginUser(LoginUserBindingModel model)
         {
-            if (this.User.Identity.GetUserId() != null)
+            if (this.idProvider.GetId() != null)
             {
                 return this.BadRequest("Already logged in!");
             }
@@ -184,7 +188,7 @@
             }
 
             // Validate that the current user exists in the database
-            var currentUserId = User.Identity.GetUserId();
+            var currentUserId = this.idProvider.GetId();
             var currentUser = this.Data.Users.GetAll().FirstOrDefault(x => x.Id == currentUserId);
 
             if (currentUser == null)
@@ -233,7 +237,7 @@
             }
 
             // Validate the current user ownership over the message
-            var currentUserId = User.Identity.GetUserId();
+            var currentUserId = this.idProvider.GetId();
             if (message.PosterId != currentUserId)
             {
                 return this.Unauthorized();
@@ -263,7 +267,7 @@
             }
 
             IdentityResult result = await this.UserManager.ChangePasswordAsync(
-                User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                this.idProvider.GetId(), model.OldPassword, model.NewPassword);
 
             if (!result.Succeeded)
             {
@@ -289,7 +293,7 @@
             }
 
             // Validate the current user exists in the database
-            var currentUserId = User.Identity.GetUserId();
+            var currentUserId = this.idProvider.GetId();
             var currentUser = this.Data.Users.GetAll().FirstOrDefault(x => x.Id == currentUserId);
             if (currentUser == null)
             {
@@ -317,7 +321,7 @@
             }
 
             // Validate the current user exists in the database
-            var currentUserId = User.Identity.GetUserId();
+            var currentUserId = this.idProvider.GetId();
             var currentUser = this.Data.Users.GetAll().FirstOrDefault(x => x.Id == currentUserId);
             if (currentUser == null)
             {
@@ -330,7 +334,7 @@
                 return this.BadRequest("Invalid email. This email is already used!");
             }
 
-            currentUser.UserName = model.Name;
+            currentUser.UserName = model.Username;
             currentUser.Email = model.Email;
             currentUser.PhoneNumber = model.PhoneNumber;
 

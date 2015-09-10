@@ -11,6 +11,7 @@ namespace WebChat.Models
     [RoutePrefix("api/user")]
     public class ApplicationUser : IdentityUser
     {
+
         private ICollection<Message> messages;
 
         public ApplicationUser()
