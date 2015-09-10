@@ -54,9 +54,17 @@ var app = app || {};
             roomView.createRoom(selector);
         });
 
+        this.get('#/room/:id', function () {
+            alert(this.params['id']);
+            roomView.room(selector);
+        });
         this.bind('createRoom', function (e, data) {
             roomController.createRoom(data);
-        })
+        });
+
+        this.bind('joinRoom', function (e, data) {
+            roomController.joinRoom(data);
+        });
     });
 
     app.router.run('#/login')

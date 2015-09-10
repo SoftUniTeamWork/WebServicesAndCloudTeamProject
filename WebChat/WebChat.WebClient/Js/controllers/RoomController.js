@@ -22,19 +22,19 @@ app.roomController = (function () {
         var _this = this;
         this.model.createRoom(data)
             .then(function (data) {
-                _this.views.showAllrooms(selector, data);
+                console.log(data);
             }, function (err) {
                 console.log(err);
                 console.log(err.responseText);
             })
     };
 
-    RoomController.prototype.joinRoom = function () {
-        //TODO: Get the room id
-
-        this.model.joinRoom(5)
-            .then(function (data) {
-                console.log(data);
+    RoomController.prototype.joinRoom = function (data) {
+            var _this = this;
+        this.model.joinRoom(data.attr('id'))
+            .then(function (_data) {
+                window.history.replaceState({}, document.title, "WebChat.WebClient/Index.html#/room/" + data.attr('id'));
+                _this.views.room(data);
             }, function (err) {
                 console.log(err);
                 console.log(err.responseText);

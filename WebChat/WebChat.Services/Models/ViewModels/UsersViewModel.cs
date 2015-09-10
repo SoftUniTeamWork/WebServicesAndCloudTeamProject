@@ -4,7 +4,7 @@ namespace WebChat.Services.Models.ViewModels
 {
     // Models returned by AccountController actions.
 
-    public class UserProfileViewModel
+    public class UsersViewModel
     {
         public object Id { get; set; }
 

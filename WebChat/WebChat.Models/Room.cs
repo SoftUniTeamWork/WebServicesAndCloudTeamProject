@@ -16,18 +16,10 @@
             this.users = new HashSet<ApplicationUser>();
             this.tags = new HashSet<Tag>();
             this.messages = new HashSet<Message>();
-            this.Size = 20;
         }
         
         [Key]
         public int Id { get; set; }
-
-        public string Password { get; set; }
-
-        public RoomType Type { get; set; }
-
-        [Range(0,50)]
-        public int Size { get; set; }
 
         [Required]
         [MinLength(5)]

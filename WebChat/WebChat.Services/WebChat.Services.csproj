@@ -237,9 +237,9 @@
     <Compile Include="Models\BindingModels\User\RegisterUserBindingModel.cs" />
     <Compile Include="Models\BindingModels\User\UserCreateMessageBindingModel.cs" />
     <Compile Include="Models\Utilities\Parse.cs" />
-    <Compile Include="Models\ViewModels\AccountViewModels.cs" />
+    <Compile Include="Models\ViewModels\GetUsersByRoomModel.cs" />
+    <Compile Include="Models\ViewModels\UsersViewModel.cs" />
     <Compile Include="Models\BindingModels\CreateMessageBindingModels.cs" />
-    <Compile Include="Models\BindingModels\UpdateRoomBindingModel.cs" />
     <Compile Include="Models\ViewModels\MessageViewModels.cs" />
     <Compile Include="Models\ViewModels\RoomViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

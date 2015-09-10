@@ -101,9 +101,6 @@ namespace WebChat.Services.Controllers
 
             var room = new Room
             {
-                Password = model.Password,
-                Type = Convert.ParseRoomType(model.Type),
-                Size = model.Size,
                 Name = model.Name
             };
 

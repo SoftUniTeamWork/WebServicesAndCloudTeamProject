@@ -11,7 +11,7 @@ namespace WebChat.Tests.MockedObjects
 {
     public class WebChatDataMock : IWebChatData
     {
-        public const string MockedUserId = "MockId";
+        public const string MockedUserId = "someId";
 
         private IGenericRepository<ApplicationUser> users;
         private IGenericRepository<Message> messages;

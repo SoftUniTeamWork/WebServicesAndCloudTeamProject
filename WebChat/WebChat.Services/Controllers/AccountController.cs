@@ -1,4 +1,5 @@
-﻿using WebChat.Services.Providers;
+﻿using WebChat.Services.Models.ViewModels;
+using WebChat.Services.Providers;
 
 namespace WebChat.Services.Controllers
 {
@@ -300,11 +301,12 @@ namespace WebChat.Services.Controllers
                 return this.BadRequest("Invalid user token! Please login again!");
             }
 
-            var userToReturn = new
+            var userToReturn = new UsersViewModel()
             {
-                currentUser.UserName,
-                currentUser.Email,
-                currentUser.PhoneNumber
+                Id = currentUser.Id,
+                Username = currentUser.UserName,
+                Email = currentUser.Email,
+                PhoneNumber = currentUser.PhoneNumber
             };
 
             return this.Ok(userToReturn);

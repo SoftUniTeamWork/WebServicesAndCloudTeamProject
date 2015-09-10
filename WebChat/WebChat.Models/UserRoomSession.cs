@@ -8,6 +8,8 @@ namespace WebChat.Models
 
         public DateTime JoinDate { get; set; }
 
+        public DateTime QuitDate { get; set; }
+
         public string UserId { get; set; }
 
         public virtual ApplicationUser User{ get; set; }

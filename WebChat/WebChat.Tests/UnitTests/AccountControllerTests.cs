@@ -20,83 +20,81 @@ namespace WebChat.Tests
     [TestClass]
     public class AccountControllerTests
     {
-        [TestClass]
-        public class ProfileControllerTests
+
+        private AccountController controller;
+        private JavaScriptSerializer serializer;
+        private WebChatDataMock dataMock;
+
+        [TestInitialize]
+        public void Initialize()
         {
-            private AccountController controller;
-            private JavaScriptSerializer serializer;
-            private WebChatDataMock dataMock;
+            this.dataMock = new WebChatDataMock();
+            this.serializer = new JavaScriptSerializer();
+            this.controller = new AccountController(this.dataMock,IdProviderMock.GetUserIdProvider().Object);
+            this.serializer = new JavaScriptSerializer();
+            this.Setup();
+        }
 
-            [TestInitialize]
-            public void Initialize()
-            {
-                this.dataMock = new WebChatDataMock();
-                this.serializer = new JavaScriptSerializer();
-                this.controller = new AccountController(this.dataMock,IdProviderMock.GetUserIdProvider().Object);
-                this.serializer = new JavaScriptSerializer();
-                this.Setup();
-            }
+        [TestMethod]
+        public void GetUserProfileShouldReturnUserProfileInfo()
+        {
+            var httpResponse = this.controller
+                .GetUserProfile()
+                .ExecuteAsync(new CancellationToken()).Result;
 
-            [TestMethod]
-            public void GetUserProfileShouldReturnUserProfileInfo()
+            Assert.AreEqual(HttpStatusCode.OK, httpResponse.StatusCode);
+
+            var serverResponse = httpResponse.Content
+                .ReadAsStringAsync().Result;
+
+            var profile =
+                this.serializer
+                    .Deserialize<UsersViewModel>(serverResponse);
+
+            var expectedProfile = this.dataMock
+                .Users.GetAll()
+                .FirstOrDefault();
+
+            Assert.AreEqual(expectedProfile.Id, profile.Id);
+
+        }
+
+        [TestMethod]
+        public void EditUserProfileShouldChangeProfileInfo()
+        {
+            var editUserInfo = new EditUserProfileBindingModel()
             {
-                var httpResponse = this.controller
-                    .GetUserProfile()
+                Username = "hahahaha",
+                Email = "hahahaha@bg.com",
+                PhoneNumber = "0887522235"
+            };
+            var response =
+                this.controller.EditUserProfile(editUserInfo)
                     .ExecuteAsync(new CancellationToken()).Result;
 
-                Assert.AreEqual(HttpStatusCode.OK, httpResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK,
+                response.StatusCode);
 
-                var serverResponse = httpResponse.Content
-                    .ReadAsStringAsync().Result;
+            var editedName = this.dataMock
+                .Users.GetAll()
+                .Select(u => u.UserName)
+                .FirstOrDefault();
 
-                var profile =
-                    this.serializer
-                        .Deserialize<UserProfileViewModel>(serverResponse);
+            Assert.AreEqual<string>("hahahaha", editedName);
+        }
 
-                var expectedProfile = this.dataMock
-                    .Users.GetAll()
-                    .FirstOrDefault();
+        private void Setup()
+        {
 
-                Assert.AreEqual(expectedProfile.Id, profile.Id);
+            var config = new HttpConfiguration();
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/api/test");
+            var route = config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}");
+            var routeData = new HttpRouteData(route, new HttpRouteValueDictionary {{"controller", "messages"}});
 
-            }
-
-            [TestMethod]
-            public void EditUserProfileShouldChangeProfileInfo()
-            {
-                var editUserInfo = new EditUserProfileBindingModel()
-                {
-                    Username = "hahahaha",
-                    Email = "hahahaha@bg.com",
-                    PhoneNumber = "0887522235"
-                };
-                var response =
-                    this.controller.EditUserProfile(editUserInfo)
-                        .ExecuteAsync(new CancellationToken()).Result;
-
-                Assert.AreEqual(HttpStatusCode.OK,
-                    response.StatusCode);
-
-                var editedName = this.dataMock
-                    .Users.GetAll()
-                    .Select(u => u.UserName)
-                    .FirstOrDefault();
-
-                Assert.AreEqual<string>("hahahaha", editedName);
-            }
-
-            private void Setup()
-            {
-
-                var config = new HttpConfiguration();
-                var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/api/test");
-                var route = config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}");
-                var routeData = new HttpRouteData(route, new HttpRouteValueDictionary {{"controller", "messages"}});
-
-                this.controller.ControllerContext = new HttpControllerContext(config, routeData, request);
-                this.controller.Request = request;
-                this.controller.Request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
-            }
+            this.controller.ControllerContext = new HttpControllerContext(config, routeData, request);
+            this.controller.Request = request;
+            this.controller.Request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
         }
     }
 }
+
