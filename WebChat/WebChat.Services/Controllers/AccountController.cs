@@ -63,7 +63,7 @@ namespace WebChat.Services.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> RegisterUser(RegisterUserBindingModel model)
         {
-            if (this.idProvider.GetId() != null)
+            if (this.User.Identity.GetUserId() != null)
             {
                 return this.BadRequest("User is already logged in.");
             }
@@ -112,7 +112,7 @@ namespace WebChat.Services.Controllers
         [Route("Login")]
         public async Task<IHttpActionResult> LoginUser(LoginUserBindingModel model)
         {
-            if (this.idProvider.GetId() != null)
+            if (this.User.Identity.GetUserId() != null)
             {
                 return this.BadRequest("Already logged in!");
             }

@@ -49,15 +49,15 @@ namespace WebChat.Tests
                 var serverResponse = httpResponse.Content
                     .ReadAsStringAsync().Result;
 
-                var profileInfo =
+                var profile =
                     this.serializer
                         .Deserialize<UserProfileViewModel>(serverResponse);
 
-                var expectedUser = this.dataMock
+                var expectedProfile = this.dataMock
                     .Users.GetAll()
                     .FirstOrDefault();
 
-                Assert.AreEqual(expectedUser.Id, profileInfo.Id);
+                Assert.AreEqual(expectedProfile.Id, profile.Id);
 
             }
 
