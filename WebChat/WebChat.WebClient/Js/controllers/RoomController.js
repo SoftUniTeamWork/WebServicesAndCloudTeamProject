@@ -1,27 +1,28 @@
 var app = app || {};
 
 app.roomController = (function () {
-    function RoomController(model){
+    function RoomController(model, views){
         this.model = model;
+        this.views = views
     }
 
     RoomController.prototype.getAllRooms = function () {
+      var _this= this;
       this.model.getAllRooms()
           .then(function (data) {
               console.log(data);
-              console.log("Here are the rooms");
+              _this.views.getAllRooms(data);
           }, function (error) {
               console.log(error);
               console.log(error.responseText);
           });
     };
 
-    RoomController.prototype.createRoom = function () {
-        // TODO: get values for the room!
-
-        this.model.createRoom("123456", "Public", 22, "GabrielaObshtata")
+    RoomController.prototype.createRoom = function (data) {
+        var _this = this;
+        this.model.createRoom(data)
             .then(function (data) {
-                console.log(data);
+                _this.views.showAllrooms(selector, data);
             }, function (err) {
                 console.log(err);
                 console.log(err.responseText);
@@ -53,8 +54,8 @@ app.roomController = (function () {
     };
 
     return {
-        load: function(model) {
-            return new RoomController(model);
+        load: function(model, views) {
+            return new RoomController(model, views);
         }
     }
 }());

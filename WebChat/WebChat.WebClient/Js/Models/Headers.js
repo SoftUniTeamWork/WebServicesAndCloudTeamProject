@@ -10,10 +10,11 @@ app.headers = (function() {
             'Access-Control-Allow-Origin': 'http://localhost:22520/'
         };
 
-        if (sessionStorage['sessionToken'] && useSessionToken) {
-            headers['X-Parse-Session-Token'] = sessionStorage['sessionToken'];
+        if (sessionStorage['authorize']) {
+            headers['Authorization'] = sessionStorage['authorize'];
         }
 
+        console.log(headers);
         return headers;
     };
 

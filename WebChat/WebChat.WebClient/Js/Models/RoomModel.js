@@ -13,13 +13,7 @@ app.roomModel = (function () {
             .get(this.baseUrl, this.headers.getHeaders());
     };
 
-    RoomModel.prototype.createRoom = function (password, type, size, name) {
-        var data = {
-            Password: password,
-            Type: type,
-            Size: size,
-            Name: name
-        };
+    RoomModel.prototype.createRoom = function (data) {
         return this.requester.post(this.baseUrl, this.headers.getHeaders(), data);
     };
 

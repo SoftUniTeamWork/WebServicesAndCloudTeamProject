@@ -9,7 +9,8 @@
         {
             switch (roomType)
             {
-                case "public": return RoomType.Public;
+                case "Public": return RoomType.Public;
+                case "Private": return RoomType.Private;
                 default: throw new ArgumentException("Wrong roomtype!");
             }
         }

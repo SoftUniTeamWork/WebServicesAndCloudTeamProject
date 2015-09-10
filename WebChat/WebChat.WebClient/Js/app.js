@@ -11,20 +11,25 @@ var app = app || {};
     var roomModel = app.roomModel.load(baseUrl, requester, headers);
     var messageModel = app.messageModel.load(baseUrl, requester, headers);
 
-    var userController = app.userController.load(userModel);
-    var TagController = app.tagController.load(tagModel);
-    var roomController = app.roomController.load(roomModel);
-    var messageController = app.messageController.load(messageModel);
 
     var userView = app.userView.load(userController, '#wrapper');
+    var roomView = app.roomView.load(roomController, "#bs-example-navbar-collapse-1");
+
+    var userController = app.userController.load(userModel, userView);
+    var TagController = app.tagController.load(tagModel);
+    var roomController = app.roomController.load(roomModel, roomView);
+    var messageController = app.messageController.load(messageModel);
+
+    userController.attachEventHandlers();
+
     app.router = Sammy(function () {
         var selector = '#wrapper';
 
-        this.get('#/', function () {
-            //$.get('Templates/Login.html', function (template) {
-            //    var outerHtml = Mustache.render(template);
-            //    $(selector).html(outerHtml);
-            //})
+        this.get('#/login', function () {
+           // $.get('Templates/Login.html', function (template) {
+             //   var outerHtml = Mustache.render(template);
+               // $(selector).html(outerHtml);
+           // })
             userView.loadLogin();
 
         });
@@ -34,8 +39,25 @@ var app = app || {};
                 var outputHtml = Mustache.render(template);
                 $(selector).html(outputHtml);
             })
+        });
+
+        this.get('#/home', function () {
+           userController.home(selector);
+        });
+
+        this.get('#/showallrooms', function () {
+            roomController.getAllRooms();
+        });
+
+
+        this.get('#/create', function () {
+            roomView.createRoom(selector);
+        });
+
+        this.bind('createRoom', function (e, data) {
+            roomController.createRoom(data);
         })
     });
 
-    app.router.run('#/')
+    app.router.run('#/login')
 }());

@@ -13,21 +13,9 @@ app.userModel = (function () {
             this.headers.getHeaders(), data);
     };
     
-    UserModel.prototype.register= function (username,
-                                            password,
-                                            confirmPassword,
-                                            email,
-                                            phone) {
+    UserModel.prototype.register= function (data) {
         var serviceUrl = this.baseUrl + "Register";
-        var data = {
-            Username: username,
-            Password: password,
-            ConfirmPassword: confirmPassword,
-            Email: email,
-            Phone: phone
-        };
-
-        var headers = this.headers.getHeaders();
+                var headers = this.headers.getHeaders();
 
         return this.requester.post(serviceUrl, headers, data);
     };
