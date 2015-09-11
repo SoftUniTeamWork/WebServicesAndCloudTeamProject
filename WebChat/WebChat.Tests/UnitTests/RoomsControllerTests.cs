@@ -25,14 +25,14 @@ namespace WebChat.Tests.UnitTests
     {
         private RoomsController controller;
         private JavaScriptSerializer serializer;
-        private WebChatDataMock data;
+        private WebChatDataMock dataMock;
 
         [TestInitialize]
         public void Initialize()
         {
-            this.data = new WebChatDataMock();
+            this.dataMock = new WebChatDataMock();
 
-            this.controller = new RoomsController(this.data, IdProviderMock.GetUserIdProvider().Object);
+            this.controller = new RoomsController(this.dataMock, IdProviderMock.GetUserIdProvider().Object);
             this.serializer = new JavaScriptSerializer();
             this.Setup();
         }
@@ -56,7 +56,7 @@ namespace WebChat.Tests.UnitTests
         public void GetUsersByRoomShouldReturnUsersInRoom()
         {
             var roomUser =
-                this.data.Rooms.GetAll()
+                this.dataMock.Rooms.GetAll()
                     .FirstOrDefault(r => r.Id == 1)
                     .Users.First();
 
@@ -133,7 +133,7 @@ namespace WebChat.Tests.UnitTests
             Assert.AreEqual(HttpStatusCode.OK, httpResponse.StatusCode);
 
             var resultRoomName =
-                this.data.Rooms.GetAll()
+                this.dataMock.Rooms.GetAll()
                 .Select(r => r.Name)
                 .Last();
 
@@ -143,9 +143,9 @@ namespace WebChat.Tests.UnitTests
         [TestMethod]
         public void DeleteRoomShouldDeleteRoom()
         {
-            var room = this.data.Rooms.GetAll().First();
+            var room = this.dataMock.Rooms.GetAll().First();
             var initialRoomsCount =
-                this.data.Rooms.GetAll().Count();
+                this.dataMock.Rooms.GetAll().Count();
 
             var httpResponse = this.controller.DeleteRoom(1)
                 .ExecuteAsync(CancellationToken.None).Result;
@@ -153,10 +153,10 @@ namespace WebChat.Tests.UnitTests
             Assert.AreEqual(HttpStatusCode.OK, httpResponse.StatusCode);
 
             Assert.AreNotEqual(room.Id,
-                this.data.Rooms.GetAll().First().Id);
+                this.dataMock.Rooms.GetAll().First().Id);
 
             Assert.AreEqual(initialRoomsCount - 1,
-                this.data.Rooms.GetAll().Count());
+                this.dataMock.Rooms.GetAll().Count());
         }
 
         [TestMethod]
@@ -172,7 +172,7 @@ namespace WebChat.Tests.UnitTests
         public void JoinRoomShouldJoinRoom()
         {
             var initialMembersCount =
-                this.data.Rooms.GetAll()
+                this.dataMock.Rooms.GetAll()
                     .FirstOrDefault(r => r.Id == 1)
                     .Users.Count;
 
@@ -182,24 +182,24 @@ namespace WebChat.Tests.UnitTests
             Assert.AreEqual(HttpStatusCode.OK, httpResponse.StatusCode);
 
             var resultMembersCount =
-                this.data.Rooms.GetAll()
+                this.dataMock.Rooms.GetAll()
                     .FirstOrDefault(r => r.Id == 1)
                     .Users.Count;
 
             Assert.AreEqual(initialMembersCount + 1, resultMembersCount);
 
             var joinedUser =
-                this.data.Rooms.GetAll()
+                this.dataMock.Rooms.GetAll()
                     .FirstOrDefault(r => r.Id == 1)
                     .Users.Last();
 
             var expectedUser =
-                this.data.Users.GetAll()
+                this.dataMock.Users.GetAll()
                     .First();
 
             Assert.AreEqual(expectedUser, joinedUser);
 
-            var newLog = this.data.UserRoomSessions.GetAll()
+            var newLog = this.dataMock.UserRoomSessions.GetAll()
                 .Last();
 
             Assert.AreEqual(expectedUser, newLog.User);
@@ -224,7 +224,7 @@ namespace WebChat.Tests.UnitTests
             Assert.AreEqual(HttpStatusCode.OK, joinRoomHttpResponse.StatusCode);
 
             var initialMembersCount =
-                this.data.Rooms.GetAll()
+                this.dataMock.Rooms.GetAll()
                     .FirstOrDefault(r => r.Id == 1)
                     .Users.Count;
 
@@ -235,14 +235,14 @@ namespace WebChat.Tests.UnitTests
             Assert.AreEqual(HttpStatusCode.OK, leaveRoomHttpResponse.StatusCode);
 
             var resultMembersCount =
-                this.data.Rooms.GetAll()
+                this.dataMock.Rooms.GetAll()
                     .FirstOrDefault(r => r.Id == 1)
                     .Users.Count;
 
             Assert.AreEqual(initialMembersCount - 1,
                 resultMembersCount);
 
-            var newLog = this.data.UserRoomSessions.GetAll()
+            var newLog = this.dataMock.UserRoomSessions.GetAll()
                 .Last();
 
             Assert.IsNotNull(newLog.QuitDate);

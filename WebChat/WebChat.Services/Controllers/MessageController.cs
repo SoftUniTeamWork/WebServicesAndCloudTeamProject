@@ -1,27 +1,28 @@
-﻿using WebChat.Services.UserSessionUtilities;
-
-namespace WebChat.Services.Controllers
+﻿namespace WebChat.Services.Controllers
 {
     using System;
     using System.Linq;
     using System.Web.Http;
-    using Microsoft.AspNet.Identity;
     using WebChat.Models;
     using DataLayer.Contracts;
     using DataLayer.Data;
     using Models.BindingModels;
     using Models.ViewModels;
-
+    using System.Web.Http.OData;
+    using Providers;
+    using UserSessionUtilities;
     public class MessageController : BaseApiController
     {
+        private IIdProvider provider;
         public MessageController()
-            : this(new WebChatData())
+            : base(new WebChatData())
         {
         }
 
-        public MessageController(IWebChatData data)
+        public MessageController(IWebChatData data, IIdProvider provider)
             : base(data)
         {
+            this.provider = provider;
         }
 
         [SessionAuthorize]
@@ -49,16 +50,16 @@ namespace WebChat.Services.Controllers
         [Route("api/rooms/{roomid}/messages")]
         public IHttpActionResult CreateMessage(int roomId, CreateMessageBindingModels model)
         {
-            var userId = this.User.Identity.GetUserId();
+            var userId = this.provider.GetId();
             var user = this.Data.Users.GetAll().FirstOrDefault(u => u.Id == userId);
-            var room = this.Data.Rooms.GetById(roomId);
+            var room = this.Data.Rooms.GetAll().FirstOrDefault(r => r.Id == roomId);
 
             if (user == null)
             {
                 return this.Unauthorized();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.BadRequest("Invalid input model");
             }
@@ -82,6 +83,31 @@ namespace WebChat.Services.Controllers
             return this.Ok("Message successfully created");
         }
 
+        [HttpGet]
+        [EnableQuery]
+        [Route("api/rooms/{roomId}/messages")]
+        public IHttpActionResult GetAllMessages(int roomId)
+        {
+            var room = this.Data.Rooms.GetAll().FirstOrDefault(r => r.Id == roomId);
+
+            if (room == null)
+            {
+                return this.BadRequest("Invalid room id");
+            }
+
+            var messages = room.Messages
+                .Select(m => new MessageOutputModel()
+                {
+                    Id = m.Id,
+                    Text = m.Text,
+                    SentDate = m.SentDate,
+                    PosterId = m.PosterId,
+                    PosterName = m.Poster.UserName
+                })
+                .OrderByDescending(m => m.SentDate);
+
+            return this.Ok(messages);
+        }
         
     }
 }
